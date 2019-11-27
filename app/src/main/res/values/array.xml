@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="유형">
+        <item>선택 안함</item>
+        <item>식사류</item>
+        <item>분식</item>
+        <item>술집</item>
+        <item>카페</item>
+        <item></item>
+    </string-array>
+
+    <string-array name="지역">
+        <item>선택 안함</item>
+        <item>서울</item>
+        <item>경기</item>
+        <item>강원</item>
+        <item>충북</item>
+        <item>충남</item>
+        <item>경북</item>
+        <item>경남</item>
+        <item>전북</item>
+        <item>전남</item>
+    </string-array>
+</resources>
