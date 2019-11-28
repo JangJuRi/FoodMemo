@@ -50,6 +50,9 @@ public class MyAdapter extends BaseAdapter {
         TextView list_name = (TextView)convertView.findViewById(R.id.list_name);
         list_name.setText(foodList.getName());
 
+        TextView list_address = (TextView)convertView.findViewById(R.id.list_address);
+        list_address.setText(foodList.getAddress());
+
 
         return convertView;
     }
