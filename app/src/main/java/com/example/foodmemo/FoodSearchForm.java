@@ -30,7 +30,7 @@ public class FoodSearchForm extends AppCompatActivity {
         mydb = new DBHelper(getApplicationContext());
         adapter = null;
 
-        data.add(new FoodList(1,"이름",1,3,2,"010222111","주소","메모","ss"));
+        data.add(new FoodList(1,"이름222",1,3,2,"010222111","주소","메모","ss"));
         adapter = new MyAdapter(getApplicationContext(),R.layout.listviewform,data);
         listView.setAdapter(adapter);
 

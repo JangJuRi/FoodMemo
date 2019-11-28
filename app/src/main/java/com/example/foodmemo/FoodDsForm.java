@@ -69,14 +69,14 @@ public class FoodDsForm extends AppCompatActivity implements View.OnClickListene
                 Intent intent = getIntent();
 
                 food_name.setText(intent.getStringExtra("name"));
-                food_type.setSelection(Integer.parseInt(intent.getStringExtra("type")));
-                food_score.setRating(Float.parseFloat(intent.getStringExtra("score")));
-                food_region.setSelection(Integer.parseInt(intent.getStringExtra("region")));
+                food_type.setSelection((intent.getIntExtra("type",1)));
+                food_score.setRating((intent.getIntExtra("score",5)));
+                food_region.setSelection((intent.getIntExtra("region",1)));
                 food_phone.setText(intent.getStringExtra("phone"));
                 food_address.setText(intent.getStringExtra("address"));
                 food_memo.setText(intent.getStringExtra("memo"));
                 pic_value = intent.getStringExtra("pic");
-                food_pic.setImageResource(Integer.parseInt(pic_value));
+//                food_pic.setImageResource(Integer.parseInt(pic_value));
             }
         }
 
