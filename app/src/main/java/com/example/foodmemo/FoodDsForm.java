@@ -116,7 +116,6 @@ public class FoodDsForm extends AppCompatActivity implements View.OnClickListene
         switch (view.getId()) {
             case R.id.food_save :
                 Bundle extras = getIntent().getExtras();
-                if(extras != null) {
                     int Value = extras.getInt("id");
                     if(Value > 0) {
                         if(mydb.updateFood(id,food_name.getText().toString(),type_value,score_value,region_value,food_phone.getText().toString(),food_address.getText().toString(),food_memo.getText().toString(),pic_value)) {
@@ -132,13 +131,11 @@ public class FoodDsForm extends AppCompatActivity implements View.OnClickListene
                         }
                         finish();
                     }
-                }
-                else Toast.makeText(getApplicationContext(), "오류",Toast.LENGTH_SHORT).show();
+
                 break;
 
             case R.id.food_del:
                 Bundle extras2 = getIntent().getExtras();
-                if(extras2 != null) {
                     int value = extras2.getInt("id");
                     if(value > 0) {
                         mydb.deleteFood(id);
@@ -147,15 +144,12 @@ public class FoodDsForm extends AppCompatActivity implements View.OnClickListene
                     } else {
                         Toast.makeText(getApplicationContext(), "삭제 실패",Toast.LENGTH_SHORT).show();
                     }
-                }
-                else Toast.makeText(getApplicationContext(), "오류",Toast.LENGTH_SHORT).show();
                 break;
 
             case R.id.food_edit:
                 Bundle extras3 = getIntent().getExtras();
-                if(extras3 != null) {
-                    int Value = extras3.getInt("id");
-                    if(Value > 0) {
+                    int Value3 = extras3.getInt("id");
+                    if(Value3 > 0) {
                         if(mydb.updateFood(id,food_name.getText().toString(),type_value,score_value,region_value,food_phone.getText().toString(),food_address.getText().toString(),food_memo.getText().toString(),pic_value)) {
                             Toast.makeText(getApplicationContext(), "수정 완료!",Toast.LENGTH_SHORT).show();
                             finish();
@@ -163,8 +157,7 @@ public class FoodDsForm extends AppCompatActivity implements View.OnClickListene
                             Toast.makeText(getApplicationContext(), "수정 실패",Toast.LENGTH_SHORT).show();
                         }
                     }
-                }
-                else Toast.makeText(getApplicationContext(), "오류",Toast.LENGTH_SHORT).show();
+
                 break;
         }
     }

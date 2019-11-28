@@ -29,7 +29,7 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(
-                "CREATE TABLE food " + "(id integer primary key,name varchar(20), type integer, score integer, region integer, phone varchar(20), address varchar(30), memo varchar(200),pic text)"
+                "CREATE TABLE food " + "(id integer primary key autoincrement,name varchar(20), type integer, score integer, region integer, phone varchar(20), address varchar(30), memo varchar(200),pic text)"
         );
     }
 
@@ -107,5 +107,12 @@ public class DBHelper extends SQLiteOpenHelper {
             res.moveToNext();
         }
         return arrayList;
+    }
+
+    public Cursor getCursorFood() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res = db.rawQuery("select * from food", null);
+
+        return res;
     }
 }
