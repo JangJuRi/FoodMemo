@@ -31,6 +31,9 @@ public class FoodSearchForm extends AppCompatActivity {
 
         listView = (ListView)findViewById(R.id.foodListview);
 
+        View header = getLayoutInflater().inflate(R.layout.list_header, null, false);
+        listView.addHeaderView(header);
+
         updateList();
 
         adapter = new MyAdapter(getApplicationContext(),R.layout.listviewform,data);
@@ -83,7 +86,6 @@ public class FoodSearchForm extends AppCompatActivity {
             );
             data.add(foodList);
         } cursor.close();
-
 
         adapter = new MyAdapter(getApplicationContext(),R.layout.listviewform,data);
         listView.setAdapter(adapter);
