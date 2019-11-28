@@ -27,8 +27,6 @@ public class FoodSearchForm extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.food_searchform);
 
-
-
         listView = (ListView)findViewById(R.id.foodListview);
 
         View header = getLayoutInflater().inflate(R.layout.list_header, null, false);
@@ -44,15 +42,15 @@ public class FoodSearchForm extends AppCompatActivity {
             public void onItemClick(AdapterView parent, View view, int position, long arg4) {
 
                 Intent intent = new Intent(getApplicationContext(),FoodDsForm.class);
-                intent.putExtra("id",data.get(position).getId());
-                intent.putExtra("name",data.get(position).getName());
-                intent.putExtra("type",data.get(position).getType());
-                intent.putExtra("score",data.get(position).getScore());
-                intent.putExtra("region",data.get(position).getRegion());
-                intent.putExtra("phone",data.get(position).getPhone());
-                intent.putExtra("address",data.get(position).getAddress());
-                intent.putExtra("memo",data.get(position).getMemo());
-                intent.putExtra("pic",data.get(position).getPic());
+                intent.putExtra("id",data.get(position-1).getId());
+                intent.putExtra("name",data.get(position-1).getName());
+                intent.putExtra("type",data.get(position-1).getType());
+                intent.putExtra("score",data.get(position-1).getScore());
+                intent.putExtra("region",data.get(position-1).getRegion());
+                intent.putExtra("phone",data.get(position-1).getPhone());
+                intent.putExtra("address",data.get(position-1).getAddress());
+                intent.putExtra("memo",data.get(position-1).getMemo());
+                intent.putExtra("pic",data.get(position-1).getPic());
 
                 startActivity(intent);
             }
@@ -62,7 +60,6 @@ public class FoodSearchForm extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
         updateList();
     }
 

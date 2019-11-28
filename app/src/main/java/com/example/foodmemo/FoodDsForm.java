@@ -32,9 +32,7 @@ public class FoodDsForm extends AppCompatActivity implements View.OnClickListene
     Button food_del;
     Button food_save;
 
-    int type_value;
     int score_value;
-    int region_value;
     String pic_value;
 
 
@@ -61,9 +59,9 @@ public class FoodDsForm extends AppCompatActivity implements View.OnClickListene
         food_save.setOnClickListener(this);
 
         mydb = new DBHelper(getApplicationContext());
-        Bundle extras = getIntent().getExtras();
-        if(extras != null) {
-            int value = extras.getInt("id");
+        Intent intent2 = getIntent();
+        if(intent2 != null) {
+            int value = intent2.getIntExtra("id",0);
 
             if(value > 0) {
                 Intent intent = getIntent();
@@ -77,36 +75,15 @@ public class FoodDsForm extends AppCompatActivity implements View.OnClickListene
                 food_memo.setText(intent.getStringExtra("memo"));
                 pic_value = intent.getStringExtra("pic");
 //                food_pic.setImageResource(Integer.parseInt(pic_value));
+
+                score_value = intent.getIntExtra("score",5);
             }
         }
-
-        food_type.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                type_value = position;
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
 
         food_score.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
                 score_value = (int) rating;
-            }
-        });
-
-        food_region.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
             }
         });
     }
@@ -116,16 +93,17 @@ public class FoodDsForm extends AppCompatActivity implements View.OnClickListene
         switch (view.getId()) {
             case R.id.food_save :
                     Intent intent = getIntent();
-                    int Value = intent.getIntExtra("id",1);
+                    int Value = intent.getIntExtra("id",0);
                     id = Value;
                     if(Value > 0) {
-                        if(mydb.updateFood(id,food_name.getText().toString(),type_value,score_value,region_value,food_phone.getText().toString(),food_address.getText().toString(),food_memo.getText().toString(),pic_value)) {
+                        if(mydb.updateFood(id,food_name.getText().toString(),food_type.getSelectedItemPosition(),score_value,food_region.getSelectedItemPosition(),food_phone.getText().toString(),food_address.getText().toString(),food_memo.getText().toString(),pic_value)) {
                             Toast.makeText(getApplicationContext(), "수정 완료!",Toast.LENGTH_SHORT).show();
                         }else{
                             Toast.makeText(getApplicationContext(), "수정 실패",Toast.LENGTH_SHORT).show();
                         }
+                        finish();
                     } else {
-                        if (mydb.insertFood(food_name.getText().toString(),type_value,score_value,region_value,food_phone.getText().toString(),food_address.getText().toString(),food_memo.getText().toString(),pic_value)) {
+                        if (mydb.insertFood(food_name.getText().toString(),food_type.getSelectedItemPosition(),score_value,food_region.getSelectedItemPosition(),food_phone.getText().toString(),food_address.getText().toString(),food_memo.getText().toString(),pic_value)) {
                             Toast.makeText(getApplicationContext(), "추가 완료!",Toast.LENGTH_SHORT).show();
                         } else {
                             Toast.makeText(getApplicationContext(), "추가 실패",Toast.LENGTH_SHORT).show();
@@ -137,7 +115,7 @@ public class FoodDsForm extends AppCompatActivity implements View.OnClickListene
 
             case R.id.food_del:
                 Intent intent2 = getIntent();
-                int value = intent2.getIntExtra("id",1);
+                int value = intent2.getIntExtra("id",0);
                     id = value;
                     if(value > 0) {
                         mydb.deleteFood(id);
@@ -146,19 +124,21 @@ public class FoodDsForm extends AppCompatActivity implements View.OnClickListene
                     } else {
                         Toast.makeText(getApplicationContext(), "삭제 실패",Toast.LENGTH_SHORT).show();
                     }
+                    finish();
                 break;
 
             case R.id.food_edit:
                 Intent intent3 = getIntent();
-                int Value3 = intent3.getIntExtra("id",1);
+                int Value3 = intent3.getIntExtra("id",0);
                      id = Value3;
                     if(Value3 > 0) {
-                        if(mydb.updateFood(id,food_name.getText().toString(),type_value,score_value,region_value,food_phone.getText().toString(),food_address.getText().toString(),food_memo.getText().toString(),pic_value)) {
+                        if(mydb.updateFood(id,food_name.getText().toString(),food_type.getSelectedItemPosition(),score_value,food_region.getSelectedItemPosition(),food_phone.getText().toString(),food_address.getText().toString(),food_memo.getText().toString(),pic_value)) {
                             Toast.makeText(getApplicationContext(), "수정 완료!",Toast.LENGTH_SHORT).show();
                             finish();
                         }else{
                             Toast.makeText(getApplicationContext(), "수정 실패",Toast.LENGTH_SHORT).show();
                         }
+                        finish();
                     }
 
                 break;

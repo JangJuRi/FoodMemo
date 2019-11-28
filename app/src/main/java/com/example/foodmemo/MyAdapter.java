@@ -45,6 +45,7 @@ public class MyAdapter extends BaseAdapter {
         FoodList foodList = data.get(position);
 
         ImageView list_pic = (ImageView)convertView.findViewById(R.id.list_pic);
+        list_pic.setImageResource(R.drawable.img_sample);
 
         TextView list_name = (TextView)convertView.findViewById(R.id.list_name);
         list_name.setText(foodList.getName());
