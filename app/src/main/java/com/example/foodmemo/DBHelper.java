@@ -77,7 +77,7 @@ public class DBHelper extends SQLiteOpenHelper {
         contentValues.put("address", address);
         contentValues.put("memo", memo);
         contentValues.put("pic", pic);
-        db.update("food", contentValues, "id = ? ", new String[]{Integer.toString(id)});
+        db.update("food", contentValues, "id = "+id,null);
         return true;
     }
 

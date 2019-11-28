@@ -115,8 +115,9 @@ public class FoodDsForm extends AppCompatActivity implements View.OnClickListene
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.food_save :
-                Bundle extras = getIntent().getExtras();
-                    int Value = extras.getInt("id");
+                    Intent intent = getIntent();
+                    int Value = intent.getIntExtra("id",1);
+                    id = Value;
                     if(Value > 0) {
                         if(mydb.updateFood(id,food_name.getText().toString(),type_value,score_value,region_value,food_phone.getText().toString(),food_address.getText().toString(),food_memo.getText().toString(),pic_value)) {
                             Toast.makeText(getApplicationContext(), "수정 완료!",Toast.LENGTH_SHORT).show();
@@ -135,8 +136,9 @@ public class FoodDsForm extends AppCompatActivity implements View.OnClickListene
                 break;
 
             case R.id.food_del:
-                Bundle extras2 = getIntent().getExtras();
-                    int value = extras2.getInt("id");
+                Intent intent2 = getIntent();
+                int value = intent2.getIntExtra("id",1);
+                    id = value;
                     if(value > 0) {
                         mydb.deleteFood(id);
                         Toast.makeText(getApplicationContext(), "삭제 성공!",Toast.LENGTH_SHORT).show();
@@ -147,8 +149,9 @@ public class FoodDsForm extends AppCompatActivity implements View.OnClickListene
                 break;
 
             case R.id.food_edit:
-                Bundle extras3 = getIntent().getExtras();
-                    int Value3 = extras3.getInt("id");
+                Intent intent3 = getIntent();
+                int Value3 = intent3.getIntExtra("id",1);
+                     id = Value3;
                     if(Value3 > 0) {
                         if(mydb.updateFood(id,food_name.getText().toString(),type_value,score_value,region_value,food_phone.getText().toString(),food_address.getText().toString(),food_memo.getText().toString(),pic_value)) {
                             Toast.makeText(getApplicationContext(), "수정 완료!",Toast.LENGTH_SHORT).show();

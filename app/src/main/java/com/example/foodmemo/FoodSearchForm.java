@@ -31,26 +31,7 @@ public class FoodSearchForm extends AppCompatActivity {
 
         listView = (ListView)findViewById(R.id.foodListview);
 
-        data = new ArrayList<FoodList>();
-        mydb = new DBHelper(getApplicationContext());
-        adapter = null;
-        cursor = null;
-        cursor = mydb.getCursorFood();
-        while (cursor.moveToNext()) {
-            foodList = new FoodList(
-            cursor.getInt(cursor.getColumnIndex("id")),
-            cursor.getString(cursor.getColumnIndex("name")),
-            cursor.getInt(cursor.getColumnIndex("type")),
-            cursor.getInt(cursor.getColumnIndex("score")),
-            cursor.getInt(cursor.getColumnIndex("region")),
-            cursor.getString(cursor.getColumnIndex("phone")),
-            cursor.getString(cursor.getColumnIndex("address")),
-            cursor.getString(cursor.getColumnIndex("memo")),
-            cursor.getString(cursor.getColumnIndex("pic"))
-            );
-            data.add(foodList);
-        } cursor.close();
-
+        updateList();
 
         adapter = new MyAdapter(getApplicationContext(),R.layout.listviewform,data);
         listView.setAdapter(adapter);
@@ -71,8 +52,40 @@ public class FoodSearchForm extends AppCompatActivity {
                 intent.putExtra("pic",data.get(position).getPic());
 
                 startActivity(intent);
-                finish();
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        updateList();
+    }
+
+    public void updateList() {
+        data = new ArrayList<FoodList>();
+        mydb = new DBHelper(getApplicationContext());
+        adapter = null;
+        cursor = null;
+        cursor = mydb.getCursorFood();
+        while (cursor.moveToNext()) {
+            foodList = new FoodList(
+                    cursor.getInt(cursor.getColumnIndex("id")),
+                    cursor.getString(cursor.getColumnIndex("name")),
+                    cursor.getInt(cursor.getColumnIndex("type")),
+                    cursor.getInt(cursor.getColumnIndex("score")),
+                    cursor.getInt(cursor.getColumnIndex("region")),
+                    cursor.getString(cursor.getColumnIndex("phone")),
+                    cursor.getString(cursor.getColumnIndex("address")),
+                    cursor.getString(cursor.getColumnIndex("memo")),
+                    cursor.getString(cursor.getColumnIndex("pic"))
+            );
+            data.add(foodList);
+        } cursor.close();
+
+
+        adapter = new MyAdapter(getApplicationContext(),R.layout.listviewform,data);
+        listView.setAdapter(adapter);
     }
 }
