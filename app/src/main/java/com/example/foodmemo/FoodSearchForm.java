@@ -1,6 +1,7 @@
 package com.example.foodmemo;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +15,7 @@ public class FoodSearchForm extends AppCompatActivity {
 
     ListView listView;
     MyAdapter adapter;
+    Cursor cursor;
     ArrayList<FoodList> Food_list = new ArrayList<FoodList>();
     ArrayList<FoodList> data = null;
 
@@ -26,11 +28,14 @@ public class FoodSearchForm extends AppCompatActivity {
 
         listView = (ListView)findViewById(R.id.foodListview);
 
-        data = new ArrayList<>();
+        data = new ArrayList<FoodList>();
         mydb = new DBHelper(getApplicationContext());
         adapter = null;
 
-        data.add(new FoodList(1,"이름222",1,3,2,"010222111","주소","메모","ss"));
+        data = mydb.getAllFood();
+
+
+//        data.add(new FoodList(1,"이름222",1,3,2,"010222111","주소","메모","ss"));
         adapter = new MyAdapter(getApplicationContext(),R.layout.listviewform,data);
         listView.setAdapter(adapter);
 
