@@ -123,4 +123,10 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return res;
     }
+
+    public Cursor getPic(int id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res = db.rawQuery("select * from food where id=" + id + "", null);
+        return res;
+    }
 }

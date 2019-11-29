@@ -51,6 +51,7 @@ public class FoodDsForm extends AppCompatActivity implements View.OnClickListene
     Uri uri;
     byte[] logoImage;
     Bitmap img;
+    Cursor cursor;
 
     private final int GET_PICTURE = 200;
 
@@ -95,7 +96,12 @@ public class FoodDsForm extends AppCompatActivity implements View.OnClickListene
                 food_phone.setText(intent.getStringExtra("phone"));
                 food_address.setText(intent.getStringExtra("address"));
                 food_memo.setText(intent.getStringExtra("memo"));
-                logoImage = intent.getByteArrayExtra("pic");
+
+                cursor = null;
+                cursor = mydb.getPic(value);
+                while(cursor.moveToNext()) {
+                    logoImage = cursor.getBlob(cursor.getColumnIndex("pic"));
+                }cursor.close();
                 if(logoImage != null) food_pic.setImageBitmap(getImage(logoImage));
                 score_value = intent.getIntExtra("score",5);
             }

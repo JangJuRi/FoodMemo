@@ -50,7 +50,7 @@ public class FoodSearchForm extends AppCompatActivity {
                 intent.putExtra("phone",data.get(position-1).getPhone());
                 intent.putExtra("address",data.get(position-1).getAddress());
                 intent.putExtra("memo",data.get(position-1).getMemo());
-                intent.putExtra("pic",data.get(position-1).getPic());
+//                intent.putExtra("pic",data.get(position-1).getPic());
 
                 startActivity(intent);
             }
