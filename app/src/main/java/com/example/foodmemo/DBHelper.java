@@ -15,8 +15,10 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String COLUMN_ID = "id";
     public static final String COLUMN_NAME = "name";
     public static final String COLUMN_TYPE = "type";
+    public static final String COLUMN_TYPE_TEXT = "type_text";
     public static final String COLUMN_SCORE = "score";
     public static final String COLUMN_REGION = "region";
+    public static final String COLUMN_REGION_TEXT = "region_text";
     public static final String COLUMN_PHONE = "phone";
     public static final String COLUMN_ADDRESS = "address";
     public static final String COLUMN_MEMO = "memo";
@@ -29,7 +31,7 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(
-                "CREATE TABLE food " + "(id integer primary key autoincrement,name varchar(20), type integer, score integer, region integer, phone varchar(20), address varchar(30), memo varchar(200),pic text)"
+                "CREATE TABLE food " + "(id integer primary key autoincrement,name varchar(20), type integer, typeT varchar(20), score integer, region integer, regionT varchar(20), phone varchar(20), address varchar(30), memo varchar(200),pic text)"
         );
     }
 
@@ -39,13 +41,15 @@ public class DBHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public boolean insertFood(String name, Integer type, Integer score, Integer region, String phone, String address, String memo, String pic) {
+    public boolean insertFood(String name, Integer type, String typeT, Integer score, Integer region, String regionT, String phone, String address, String memo, String pic) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("name", name);
         contentValues.put("type", type);
+        contentValues.put("typeT", typeT);
         contentValues.put("score", score);
         contentValues.put("region", region);
+        contentValues.put("regionT", regionT);
         contentValues.put("phone", phone);
         contentValues.put("address", address);
         contentValues.put("memo", memo);
@@ -66,13 +70,15 @@ public class DBHelper extends SQLiteOpenHelper {
         return numRows;
     }
 
-    public boolean updateFood(Integer id, String name, Integer type, Integer score, Integer region, String phone, String address, String memo, String pic) {
+    public boolean updateFood(Integer id, String name, Integer type, String typeT, Integer score, Integer region, String regionT, String phone, String address, String memo, String pic) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("name", name);
         contentValues.put("type", type);
+        contentValues.put("typeT", typeT);
         contentValues.put("score", score);
         contentValues.put("region", region);
+        contentValues.put("regionT", regionT);
         contentValues.put("phone", phone);
         contentValues.put("address", address);
         contentValues.put("memo", memo);
@@ -98,8 +104,10 @@ public class DBHelper extends SQLiteOpenHelper {
             arrayList.add(res.getString(res.getColumnIndex(COLUMN_ID))+" "+
                     res.getString(res.getColumnIndex(COLUMN_NAME))+" "+
                     res.getString(res.getColumnIndex(COLUMN_TYPE))+" "+
+                    res.getString(res.getColumnIndex(COLUMN_TYPE_TEXT))+" "+
                     res.getString(res.getColumnIndex(COLUMN_SCORE))+" "+
                     res.getString(res.getColumnIndex(COLUMN_REGION))+" "+
+                    res.getString(res.getColumnIndex(COLUMN_REGION_TEXT))+" "+
                     res.getString(res.getColumnIndex(COLUMN_PHONE))+" "+
                     res.getString(res.getColumnIndex(COLUMN_ADDRESS))+" "+
                     res.getString(res.getColumnIndex(COLUMN_MEMO))+" "+

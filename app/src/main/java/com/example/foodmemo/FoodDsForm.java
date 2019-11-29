@@ -2,9 +2,12 @@ package com.example.foodmemo;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -13,6 +16,8 @@ import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.net.URI;
 
 public class FoodDsForm extends AppCompatActivity implements View.OnClickListener{
 
@@ -33,7 +38,10 @@ public class FoodDsForm extends AppCompatActivity implements View.OnClickListene
     Button food_save;
 
     int score_value;
-    String pic_value;
+    String file_path = null;
+    Uri uri;
+
+    private final int GET_PICTURE = 1;
 
 
     @Override
@@ -54,9 +62,12 @@ public class FoodDsForm extends AppCompatActivity implements View.OnClickListene
         food_del = (Button)findViewById(R.id.food_del);
         food_save = (Button)findViewById(R.id.food_save);
 
+        food_pic.setOnClickListener(this);
         food_edit.setOnClickListener(this);
         food_del.setOnClickListener(this);
         food_save.setOnClickListener(this);
+
+        ButtonVisible();    //저장,수정버튼 활성화
 
         mydb = new DBHelper(getApplicationContext());
         Intent intent2 = getIntent();
@@ -73,9 +84,8 @@ public class FoodDsForm extends AppCompatActivity implements View.OnClickListene
                 food_phone.setText(intent.getStringExtra("phone"));
                 food_address.setText(intent.getStringExtra("address"));
                 food_memo.setText(intent.getStringExtra("memo"));
-                pic_value = intent.getStringExtra("pic");
-//                food_pic.setImageResource(Integer.parseInt(pic_value));
-
+                file_path = intent.getStringExtra("pic");
+                if(file_path != null) food_pic.setImageURI(Uri.parse(file_path));
                 score_value = intent.getIntExtra("score",5);
             }
         }
@@ -96,14 +106,14 @@ public class FoodDsForm extends AppCompatActivity implements View.OnClickListene
                     int Value = intent.getIntExtra("id",0);
                     id = Value;
                     if(Value > 0) {
-                        if(mydb.updateFood(id,food_name.getText().toString(),food_type.getSelectedItemPosition(),score_value,food_region.getSelectedItemPosition(),food_phone.getText().toString(),food_address.getText().toString(),food_memo.getText().toString(),pic_value)) {
+                        if(mydb.updateFood(id,food_name.getText().toString(),food_type.getSelectedItemPosition(),food_type.getSelectedItem().toString(),score_value,food_region.getSelectedItemPosition(), food_region.getSelectedItem().toString(),food_phone.getText().toString(),food_address.getText().toString(),food_memo.getText().toString(),file_path)) {
                             Toast.makeText(getApplicationContext(), "수정 완료!",Toast.LENGTH_SHORT).show();
                         }else{
                             Toast.makeText(getApplicationContext(), "수정 실패",Toast.LENGTH_SHORT).show();
                         }
                         finish();
                     } else {
-                        if (mydb.insertFood(food_name.getText().toString(),food_type.getSelectedItemPosition(),score_value,food_region.getSelectedItemPosition(),food_phone.getText().toString(),food_address.getText().toString(),food_memo.getText().toString(),pic_value)) {
+                        if (mydb.insertFood(food_name.getText().toString(),food_type.getSelectedItemPosition(),food_type.getSelectedItem().toString(),score_value,food_region.getSelectedItemPosition(), food_region.getSelectedItem().toString(),food_phone.getText().toString(),food_address.getText().toString(),food_memo.getText().toString(),file_path)) {
                             Toast.makeText(getApplicationContext(), "추가 완료!",Toast.LENGTH_SHORT).show();
                         } else {
                             Toast.makeText(getApplicationContext(), "추가 실패",Toast.LENGTH_SHORT).show();
@@ -132,7 +142,7 @@ public class FoodDsForm extends AppCompatActivity implements View.OnClickListene
                 int Value3 = intent3.getIntExtra("id",0);
                      id = Value3;
                     if(Value3 > 0) {
-                        if(mydb.updateFood(id,food_name.getText().toString(),food_type.getSelectedItemPosition(),score_value,food_region.getSelectedItemPosition(),food_phone.getText().toString(),food_address.getText().toString(),food_memo.getText().toString(),pic_value)) {
+                        if(mydb.updateFood(id,food_name.getText().toString(),food_type.getSelectedItemPosition(), food_type.getSelectedItem().toString(),score_value,food_region.getSelectedItemPosition(), food_region.getSelectedItem().toString(),food_phone.getText().toString(),food_address.getText().toString(),food_memo.getText().toString(),file_path)) {
                             Toast.makeText(getApplicationContext(), "수정 완료!",Toast.LENGTH_SHORT).show();
                             finish();
                         }else{
@@ -140,8 +150,56 @@ public class FoodDsForm extends AppCompatActivity implements View.OnClickListene
                         }
                         finish();
                     }
-
                 break;
+
+            case R.id.food_pic:
+                Intent i = new Intent();
+                i.setAction(Intent.ACTION_PICK);
+                i.setType("image/*");
+                startActivityForResult(Intent.createChooser(i,"SelectPicture"),GET_PICTURE);
         }
+    }
+
+    public void ButtonVisible() {
+        Intent intent = getIntent();
+        int Value = intent.getIntExtra("id",0);
+        id = Value;
+
+        if(Value > 0) {     //수정버튼 활성화
+            food_edit.setVisibility(View.VISIBLE);
+            food_save.setVisibility(View.GONE);
+            food_del.setVisibility(View.VISIBLE);
+        }
+        else {              //추가버튼 활성화
+            food_edit.setVisibility(View.GONE);
+            food_save.setVisibility(View.VISIBLE);
+            food_del.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(resultCode == RESULT_OK) {
+            if(requestCode == GET_PICTURE) {
+                uri = data.getData();
+                file_path = uri_path(uri);
+                Log.e("test",file_path);
+            }
+        }
+    }
+
+    private String uri_path(Uri uri) {
+        String res = null;
+        String[] image_data = {MediaStore.Images.Media.DATA};
+        Cursor cursor = getContentResolver().query(uri,image_data,null,null,null);
+
+        if(cursor.moveToFirst()) {
+            int col = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            res = cursor.getString(col);
+        }
+        cursor.close();
+        return res;
     }
 }

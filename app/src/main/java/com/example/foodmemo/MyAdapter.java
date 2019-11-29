@@ -1,6 +1,7 @@
 package com.example.foodmemo;
 
 import android.content.Context;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,7 +46,8 @@ public class MyAdapter extends BaseAdapter {
         FoodList foodList = data.get(position);
 
         ImageView list_pic = (ImageView)convertView.findViewById(R.id.list_pic);
-        list_pic.setImageResource(R.drawable.img_sample);
+        if(foodList.getPic()!=null) list_pic.setImageURI(Uri.parse(foodList.getPic()));
+        else list_pic.setImageResource(R.drawable.img_sample);
 
         TextView list_name = (TextView)convertView.findViewById(R.id.list_name);
         list_name.setText(foodList.getName());
@@ -53,6 +55,13 @@ public class MyAdapter extends BaseAdapter {
         TextView list_address = (TextView)convertView.findViewById(R.id.list_address);
         list_address.setText(foodList.getAddress());
 
+        TextView list_type = (TextView)convertView.findViewById(R.id.list_type);
+        list_type.setText(foodList.getTypeT());
+
+        TextView list_region = (TextView)convertView.findViewById(R.id.list_region);
+        list_region.setText(foodList.getRegionT());
+
+        TextView centerText = (TextView)convertView.findViewById(R.id.center);
 
         return convertView;
     }

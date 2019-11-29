@@ -153,7 +153,7 @@
                 android:layout_marginRight="5dp"
                 android:layout_weight="1"
                 android:background="@drawable/ds_button"
-                android:text="저장"
+                android:text="추가"
                 android:textColor="@android:color/background_light"
                 android:textSize="14sp"
                 android:textStyle="bold"
