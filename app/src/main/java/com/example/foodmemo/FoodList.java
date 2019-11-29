@@ -11,7 +11,7 @@ public class FoodList {
     private String phone;
     private String address;
     private String memo;
-    private String pic;
+    private byte[] pic;
 
     public int getId() {return id;}
     public String getName() {return name;}
@@ -21,11 +21,11 @@ public class FoodList {
     public String getPhone() {return phone;}
     public String getAddress() {return address;}
     public String getMemo() {return memo;}
-    public String getPic() {return pic;}
+    public byte[] getPic() {return pic;}
     public String getTypeT() { return typeT; }
     public String getRegionT() { return regionT; }
 
-    public FoodList(int id, String name, int type, String typeT, int score, int region, String regionT, String phone, String address, String memo, String pic) {
+    public FoodList(int id, String name, int type, String typeT, int score, int region, String regionT, String phone, String address, String memo, byte[] pic) {
         this.id = id;
         this.name = name;
         this.type = type;

@@ -81,7 +81,7 @@ public class FoodSearchForm extends AppCompatActivity {
                     cursor.getString(cursor.getColumnIndex("phone")),
                     cursor.getString(cursor.getColumnIndex("address")),
                     cursor.getString(cursor.getColumnIndex("memo")),
-                    cursor.getString(cursor.getColumnIndex("pic"))
+                    cursor.getBlob(cursor.getColumnIndex("pic"))
             );
             data.add(foodList);
         } cursor.close();

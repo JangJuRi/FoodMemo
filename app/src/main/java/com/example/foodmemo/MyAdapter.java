@@ -1,6 +1,8 @@
 package com.example.foodmemo;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,7 +48,7 @@ public class MyAdapter extends BaseAdapter {
         FoodList foodList = data.get(position);
 
         ImageView list_pic = (ImageView)convertView.findViewById(R.id.list_pic);
-        if(foodList.getPic()!=null) list_pic.setImageURI(Uri.parse(foodList.getPic()));
+        if(foodList.getPic()!=null) list_pic.setImageBitmap(getImage(foodList.getPic()));
         else list_pic.setImageResource(R.drawable.img_sample);
 
         TextView list_name = (TextView)convertView.findViewById(R.id.list_name);
@@ -64,5 +66,9 @@ public class MyAdapter extends BaseAdapter {
         TextView centerText = (TextView)convertView.findViewById(R.id.center);
 
         return convertView;
+    }
+
+    private Bitmap getImage(byte[] image) {
+        return BitmapFactory.decodeByteArray(image, 0, image.length);
     }
 }

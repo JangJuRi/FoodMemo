@@ -31,7 +31,7 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(
-                "CREATE TABLE food " + "(id integer primary key autoincrement,name varchar(20), type integer, typeT varchar(20), score integer, region integer, regionT varchar(20), phone varchar(20), address varchar(30), memo varchar(200),pic text)"
+                "CREATE TABLE food " + "(id integer primary key autoincrement,name varchar(20), type integer, typeT varchar(20), score integer, region integer, regionT varchar(20), phone varchar(20), address varchar(30), memo varchar(200),pic blob)"
         );
     }
 
@@ -41,7 +41,7 @@ public class DBHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public boolean insertFood(String name, Integer type, String typeT, Integer score, Integer region, String regionT, String phone, String address, String memo, String pic) {
+    public boolean insertFood(String name, Integer type, String typeT, Integer score, Integer region, String regionT, String phone, String address, String memo, byte[] pic) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("name", name);
@@ -70,7 +70,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return numRows;
     }
 
-    public boolean updateFood(Integer id, String name, Integer type, String typeT, Integer score, Integer region, String regionT, String phone, String address, String memo, String pic) {
+    public boolean updateFood(Integer id, String name, Integer type, String typeT, Integer score, Integer region, String regionT, String phone, String address, String memo, byte[] pic) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("name", name);

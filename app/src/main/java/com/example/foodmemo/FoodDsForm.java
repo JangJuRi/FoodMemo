@@ -2,6 +2,8 @@ package com.example.foodmemo;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -17,7 +19,14 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.apache.http.util.ByteArrayBuffer;
+
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.net.URI;
+import java.net.URL;
+import java.net.URLConnection;
 
 public class FoodDsForm extends AppCompatActivity implements View.OnClickListener{
 
@@ -40,6 +49,8 @@ public class FoodDsForm extends AppCompatActivity implements View.OnClickListene
     int score_value;
     String file_path = null;
     Uri uri;
+    byte[] logoImage;
+    Bitmap img;
 
     private final int GET_PICTURE = 200;
 
@@ -84,8 +95,8 @@ public class FoodDsForm extends AppCompatActivity implements View.OnClickListene
                 food_phone.setText(intent.getStringExtra("phone"));
                 food_address.setText(intent.getStringExtra("address"));
                 food_memo.setText(intent.getStringExtra("memo"));
-                file_path = intent.getStringExtra("pic");
-                if(file_path != null) food_pic.setImageURI(Uri.parse(file_path));
+                logoImage = intent.getByteArrayExtra("pic");
+                if(logoImage != null) food_pic.setImageBitmap(getImage(logoImage));
                 score_value = intent.getIntExtra("score",5);
             }
         }
@@ -106,14 +117,14 @@ public class FoodDsForm extends AppCompatActivity implements View.OnClickListene
                     int Value = intent.getIntExtra("id",0);
                     id = Value;
                     if(Value > 0) {
-                        if(mydb.updateFood(id,food_name.getText().toString(),food_type.getSelectedItemPosition(),food_type.getSelectedItem().toString(),score_value,food_region.getSelectedItemPosition(), food_region.getSelectedItem().toString(),food_phone.getText().toString(),food_address.getText().toString(),food_memo.getText().toString(),file_path)) {
+                        if(mydb.updateFood(id,food_name.getText().toString(),food_type.getSelectedItemPosition(),food_type.getSelectedItem().toString(),score_value,food_region.getSelectedItemPosition(), food_region.getSelectedItem().toString(),food_phone.getText().toString(),food_address.getText().toString(),food_memo.getText().toString(),logoImage)) {
                             Toast.makeText(getApplicationContext(), "수정 완료!",Toast.LENGTH_SHORT).show();
                         }else{
                             Toast.makeText(getApplicationContext(), "수정 실패",Toast.LENGTH_SHORT).show();
                         }
                         finish();
                     } else {
-                        if (mydb.insertFood(food_name.getText().toString(),food_type.getSelectedItemPosition(),food_type.getSelectedItem().toString(),score_value,food_region.getSelectedItemPosition(), food_region.getSelectedItem().toString(),food_phone.getText().toString(),food_address.getText().toString(),food_memo.getText().toString(),file_path)) {
+                        if (mydb.insertFood(food_name.getText().toString(),food_type.getSelectedItemPosition(),food_type.getSelectedItem().toString(),score_value,food_region.getSelectedItemPosition(), food_region.getSelectedItem().toString(),food_phone.getText().toString(),food_address.getText().toString(),food_memo.getText().toString(),logoImage)) {
                             Toast.makeText(getApplicationContext(), "추가 완료!",Toast.LENGTH_SHORT).show();
                         } else {
                             Toast.makeText(getApplicationContext(), "추가 실패",Toast.LENGTH_SHORT).show();
@@ -142,7 +153,7 @@ public class FoodDsForm extends AppCompatActivity implements View.OnClickListene
                 int Value3 = intent3.getIntExtra("id",0);
                      id = Value3;
                     if(Value3 > 0) {
-                        if(mydb.updateFood(id,food_name.getText().toString(),food_type.getSelectedItemPosition(), food_type.getSelectedItem().toString(),score_value,food_region.getSelectedItemPosition(), food_region.getSelectedItem().toString(),food_phone.getText().toString(),food_address.getText().toString(),food_memo.getText().toString(),file_path)) {
+                        if(mydb.updateFood(id,food_name.getText().toString(),food_type.getSelectedItemPosition(), food_type.getSelectedItem().toString(),score_value,food_region.getSelectedItemPosition(), food_region.getSelectedItem().toString(),food_phone.getText().toString(),food_address.getText().toString(),food_memo.getText().toString(),logoImage)) {
                             Toast.makeText(getApplicationContext(), "수정 완료!",Toast.LENGTH_SHORT).show();
                             finish();
                         }else{
@@ -182,23 +193,32 @@ public class FoodDsForm extends AppCompatActivity implements View.OnClickListene
         super.onActivityResult(requestCode, resultCode, data);
 
         if(requestCode == GET_PICTURE && resultCode == RESULT_OK && data != null && data.getData() != null) {
-                uri = data.getData();
-                file_path = uri.toString();
-                food_pic.setImageURI(uri);
-                Log.e("test",file_path);
-        }
-    }
+            try{
+                InputStream in = getContentResolver().openInputStream(data.getData());
 
-    private String uri_path(Uri uri) {
-        String res = null;
-        String[] image_data = {MediaStore.Images.Media.DATA};
-        Cursor cursor = getContentResolver().query(uri,image_data,null,null,null);
-
-        if(cursor.moveToFirst()) {
-            int col = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-            res = cursor.getString(col);
+                img = BitmapFactory.decodeStream(in);
+                in.close();
+                logoImage = getBytes(img);
+                food_pic.setImageBitmap(img);
+            }catch(Exception e) { }
         }
-        cursor.close();
-        return res;
-    }
+        else if(resultCode == RESULT_CANCELED)
+        {
+            Toast.makeText(this, "사진 선택 취소", Toast.LENGTH_LONG).show();
+        }
+//                uri = data.getData();
+//                logoImage = getLogoImage(String.valueOf(uri));
+//                food_pic.setImageURI(uri);
+//                Log.e("test", String.valueOf(logoImage));
+        }
+
+        private byte[] getBytes(Bitmap bitmap) {        //비트맵을 바이트로
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 0, stream);
+            return stream.toByteArray();
+        }
+
+         private Bitmap getImage(byte[] image) {        //바이트를 비트맵으로
+        return BitmapFactory.decodeByteArray(image, 0, image.length);
+       }
 }
