@@ -41,7 +41,7 @@ public class FoodDsForm extends AppCompatActivity implements View.OnClickListene
     String file_path = null;
     Uri uri;
 
-    private final int GET_PICTURE = 1;
+    private final int GET_PICTURE = 200;
 
 
     @Override
@@ -155,8 +155,8 @@ public class FoodDsForm extends AppCompatActivity implements View.OnClickListene
             case R.id.food_pic:
                 Intent i = new Intent();
                 i.setAction(Intent.ACTION_PICK);
-                i.setType("image/*");
-                startActivityForResult(Intent.createChooser(i,"SelectPicture"),GET_PICTURE);
+                i.setDataAndType(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+                startActivityForResult(i,GET_PICTURE);
         }
     }
 
@@ -181,12 +181,11 @@ public class FoodDsForm extends AppCompatActivity implements View.OnClickListene
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(resultCode == RESULT_OK) {
-            if(requestCode == GET_PICTURE) {
+        if(requestCode == GET_PICTURE && resultCode == RESULT_OK && data != null && data.getData() != null) {
                 uri = data.getData();
-                file_path = uri_path(uri);
+                file_path = uri.toString();
+                food_pic.setImageURI(uri);
                 Log.e("test",file_path);
-            }
         }
     }
 
