@@ -177,6 +177,7 @@ public class FoodDsForm extends AppCompatActivity implements View.OnClickListene
         }
     }
 
+    /* 추가/수정/삭제버튼 visibility 속성 */
     public void ButtonVisible() {
         Intent intent = getIntent();
         int Value = intent.getIntExtra("id",0);
@@ -218,13 +219,14 @@ public class FoodDsForm extends AppCompatActivity implements View.OnClickListene
 //                Log.e("test", String.valueOf(logoImage));
         }
 
-        private byte[] getBytes(Bitmap bitmap) {        //비트맵을 바이트로
+        /* 비트맵을 바이트로 */
+        private byte[] getBytes(Bitmap bitmap) {
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.PNG, 0, stream);
             return stream.toByteArray();
         }
-
-         private Bitmap getImage(byte[] image) {        //바이트를 비트맵으로
+        /* 바이트를 비트맵으로 */
+         private Bitmap getImage(byte[] image) {
         return BitmapFactory.decodeByteArray(image, 0, image.length);
        }
 }

@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -25,6 +26,7 @@ public class FoodSearchForm extends AppCompatActivity implements View.OnClickLis
     Spinner select_type;
     Spinner select_region;
     Button select_button;
+    TextView list_total;
 
     private int type_value;
     private int region_value;
@@ -44,6 +46,7 @@ public class FoodSearchForm extends AppCompatActivity implements View.OnClickLis
         select_button.setOnClickListener(this);
         select_type = (Spinner)findViewById(R.id.select_type);
         select_region = (Spinner)findViewById(R.id.select_region);
+        list_total = (TextView)findViewById(R.id.list_total);
 
         updateList();
 
@@ -71,11 +74,22 @@ public class FoodSearchForm extends AppCompatActivity implements View.OnClickLis
     }
 
     @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.select_button:
+                type_value = select_type.getSelectedItemPosition();
+                region_value = select_region.getSelectedItemPosition();
+                SelectList();
+        }
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         updateList();
     }
 
+    /* 리스트뷰에 데이터 넣기 */
     public void updateList() {
         data = new ArrayList<FoodList>();
         mydb = new DBHelper(getApplicationContext());
@@ -101,8 +115,10 @@ public class FoodSearchForm extends AppCompatActivity implements View.OnClickLis
 
         adapter = new MyAdapter(getApplicationContext(),R.layout.listviewform,data);
         listView.setAdapter(adapter);
+        TotalText();
     }
 
+    /* 리스트뷰 상세검색 */
     public void SelectList() {
         data = new ArrayList<FoodList>();
         mydb = new DBHelper(getApplicationContext());
@@ -130,13 +146,8 @@ public class FoodSearchForm extends AppCompatActivity implements View.OnClickLis
         listView.setAdapter(adapter);
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.select_button:
-                type_value = select_type.getSelectedItemPosition();
-                region_value = select_region.getSelectedItemPosition();
-                SelectList();
-        }
+    /* 맛집 갯수 띄우기 */
+    public void TotalText() {
+        list_total.setText("맛집 리스트 (" + mydb.numberOfRows() + ")");
     }
 }

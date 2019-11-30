@@ -48,6 +48,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="TextView"
+                android:textColor="#C0D2D7"
                 android:textSize="14sp" />
         </LinearLayout>
 
