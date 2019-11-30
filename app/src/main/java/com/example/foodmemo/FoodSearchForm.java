@@ -118,7 +118,7 @@ public class FoodSearchForm extends AppCompatActivity implements View.OnClickLis
         TotalText();
     }
 
-    /* 리스트뷰 상세검색 */
+    /* 리스트뷰 상세검색  */
     public void SelectList() {
         data = new ArrayList<FoodList>();
         mydb = new DBHelper(getApplicationContext());
