@@ -54,7 +54,6 @@
                     android:isIndicator="false"
                     android:max="5"
                     android:numStars="5"
-                    android:rating="5"
                     android:stepSize="1" />
             </LinearLayout>
 

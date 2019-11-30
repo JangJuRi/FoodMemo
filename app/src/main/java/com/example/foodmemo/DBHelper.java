@@ -117,6 +117,26 @@ public class DBHelper extends SQLiteOpenHelper {
         return arrayList;
     }
 
+    public Cursor getSelectFood(int type, int region) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res;
+
+        if(type == 0 && region == 0) {
+            res = db.rawQuery("select * from food", null);
+        }
+        else if (type != 0 && region == 0) {
+            res = db.rawQuery("select * from food where type=" + type + "", null);
+        }
+        else if (type == 0 && region != 0) {
+            res = db.rawQuery("select * from food where region=" + region + "", null);
+        }
+        else {
+            res = db.rawQuery("select * from food where type=" + type + " and region=" + region+"", null);
+        }
+
+        return res;
+    }
+
     public Cursor getCursorFood() {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor res = db.rawQuery("select * from food", null);

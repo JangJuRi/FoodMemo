@@ -8,17 +8,26 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Spinner;
 
 import java.util.ArrayList;
 
-public class FoodSearchForm extends AppCompatActivity {
+public class FoodSearchForm extends AppCompatActivity implements View.OnClickListener {
 
     ListView listView;
     MyAdapter adapter;
     ArrayList<FoodList> data = null;
     Cursor cursor;
     FoodList foodList;
+
+    Spinner select_type;
+    Spinner select_region;
+    Button select_button;
+
+    private int type_value;
+    private int region_value;
 
     DBHelper mydb;
 
@@ -31,6 +40,10 @@ public class FoodSearchForm extends AppCompatActivity {
 
         View header = getLayoutInflater().inflate(R.layout.list_header, null, false);
         listView.addHeaderView(header);
+        select_button = (Button)findViewById(R.id.select_button);
+        select_button.setOnClickListener(this);
+        select_type = (Spinner)findViewById(R.id.select_type);
+        select_region = (Spinner)findViewById(R.id.select_region);
 
         updateList();
 
@@ -88,5 +101,42 @@ public class FoodSearchForm extends AppCompatActivity {
 
         adapter = new MyAdapter(getApplicationContext(),R.layout.listviewform,data);
         listView.setAdapter(adapter);
+    }
+
+    public void SelectList() {
+        data = new ArrayList<FoodList>();
+        mydb = new DBHelper(getApplicationContext());
+        adapter = null;
+        cursor = null;
+        cursor = mydb.getSelectFood(type_value,region_value);
+        while (cursor.moveToNext()) {
+            foodList = new FoodList(
+                    cursor.getInt(cursor.getColumnIndex("id")),
+                    cursor.getString(cursor.getColumnIndex("name")),
+                    cursor.getInt(cursor.getColumnIndex("type")),
+                    cursor.getString(cursor.getColumnIndex("typeT")),
+                    cursor.getInt(cursor.getColumnIndex("score")),
+                    cursor.getInt(cursor.getColumnIndex("region")),
+                    cursor.getString(cursor.getColumnIndex("regionT")),
+                    cursor.getString(cursor.getColumnIndex("phone")),
+                    cursor.getString(cursor.getColumnIndex("address")),
+                    cursor.getString(cursor.getColumnIndex("memo")),
+                    cursor.getBlob(cursor.getColumnIndex("pic"))
+            );
+            data.add(foodList);
+        } cursor.close();
+
+        adapter = new MyAdapter(getApplicationContext(),R.layout.listviewform,data);
+        listView.setAdapter(adapter);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.select_button:
+                type_value = select_type.getSelectedItemPosition();
+                region_value = select_region.getSelectedItemPosition();
+                SelectList();
+        }
     }
 }
