@@ -1,5 +1,6 @@
 package com.example.foodmemo;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -11,6 +12,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -45,6 +47,7 @@ public class FoodDsForm extends AppCompatActivity implements View.OnClickListene
     Button food_edit;
     Button food_del;
     Button food_save;
+    Button food_editable;
 
     int score_value;
     String file_path = null;
@@ -52,6 +55,8 @@ public class FoodDsForm extends AppCompatActivity implements View.OnClickListene
     byte[] logoImage;
     Bitmap img;
     Cursor cursor;
+
+    boolean editable;
 
     private final int GET_PICTURE = 200;
 
@@ -73,11 +78,13 @@ public class FoodDsForm extends AppCompatActivity implements View.OnClickListene
         food_edit = (Button)findViewById(R.id.food_edit);
         food_del = (Button)findViewById(R.id.food_del);
         food_save = (Button)findViewById(R.id.food_save);
+        food_editable = (Button)findViewById(R.id.food_editable);
 
         food_pic.setOnClickListener(this);
         food_edit.setOnClickListener(this);
         food_del.setOnClickListener(this);
         food_save.setOnClickListener(this);
+        food_editable.setOnClickListener(this);
 
         ButtonVisible();    //저장,수정버튼 활성화
 
@@ -88,6 +95,8 @@ public class FoodDsForm extends AppCompatActivity implements View.OnClickListene
 
             if(value > 0) {
                 Intent intent = getIntent();
+                food_editable.setVisibility(View.VISIBLE);
+                editFalse();
 
                 food_name.setText(intent.getStringExtra("name"));
                 food_type.setSelection((intent.getIntExtra("type",1)));
@@ -118,63 +127,114 @@ public class FoodDsForm extends AppCompatActivity implements View.OnClickListene
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.food_save :
-                    Intent intent = getIntent();
-                    int Value = intent.getIntExtra("id",0);
-                    id = Value;
-                    if(Value > 0) {
-                        if(mydb.updateFood(id,food_name.getText().toString(),food_type.getSelectedItemPosition(),food_type.getSelectedItem().toString(),score_value,food_region.getSelectedItemPosition(), food_region.getSelectedItem().toString(),food_phone.getText().toString(),food_address.getText().toString(),food_memo.getText().toString(),logoImage)) {
-                            Toast.makeText(getApplicationContext(), "수정 완료!",Toast.LENGTH_SHORT).show();
-                        }else{
-                            Toast.makeText(getApplicationContext(), "수정 실패",Toast.LENGTH_SHORT).show();
-                        }
-                        finish();
+            case R.id.food_save:
+                Intent intent = getIntent();
+                int Value = intent.getIntExtra("id", 0);
+                id = Value;
+                if (Value > 0) {
+                    if (mydb.updateFood(id, food_name.getText().toString(), food_type.getSelectedItemPosition(), food_type.getSelectedItem().toString(), score_value, food_region.getSelectedItemPosition(), food_region.getSelectedItem().toString(), food_phone.getText().toString(), food_address.getText().toString(), food_memo.getText().toString(), logoImage)) {
+                        Toast.makeText(getApplicationContext(), "수정 완료!", Toast.LENGTH_SHORT).show();
                     } else {
-                        if (mydb.insertFood(food_name.getText().toString(),food_type.getSelectedItemPosition(),food_type.getSelectedItem().toString(),score_value,food_region.getSelectedItemPosition(), food_region.getSelectedItem().toString(),food_phone.getText().toString(),food_address.getText().toString(),food_memo.getText().toString(),logoImage)) {
-                            Toast.makeText(getApplicationContext(), "추가 완료!",Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(getApplicationContext(), "추가 실패",Toast.LENGTH_SHORT).show();
-                        }
-                        finish();
+                        Toast.makeText(getApplicationContext(), "수정 실패", Toast.LENGTH_SHORT).show();
                     }
+                    finish();
+                } else {
+                    if (mydb.insertFood(food_name.getText().toString(), food_type.getSelectedItemPosition(), food_type.getSelectedItem().toString(), score_value, food_region.getSelectedItemPosition(), food_region.getSelectedItem().toString(), food_phone.getText().toString(), food_address.getText().toString(), food_memo.getText().toString(), logoImage)) {
+                        Toast.makeText(getApplicationContext(), "추가 완료!", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "추가 실패", Toast.LENGTH_SHORT).show();
+                    }
+                    finish();
+                }
 
                 break;
 
             case R.id.food_del:
                 Intent intent2 = getIntent();
-                int value = intent2.getIntExtra("id",0);
-                    id = value;
-                    if(value > 0) {
-                        mydb.deleteFood(id);
-                        Toast.makeText(getApplicationContext(), "삭제 성공!",Toast.LENGTH_SHORT).show();
-                        finish();
-                    } else {
-                        Toast.makeText(getApplicationContext(), "삭제 실패",Toast.LENGTH_SHORT).show();
-                    }
+                int value = intent2.getIntExtra("id", 0);
+                id = value;
+                if (value > 0) {
+                    mydb.deleteFood(id);
+                    Toast.makeText(getApplicationContext(), "삭제 성공!", Toast.LENGTH_SHORT).show();
                     finish();
+                } else {
+                    Toast.makeText(getApplicationContext(), "삭제 실패", Toast.LENGTH_SHORT).show();
+                }
+                finish();
                 break;
 
             case R.id.food_edit:
                 Intent intent3 = getIntent();
-                int Value3 = intent3.getIntExtra("id",0);
-                     id = Value3;
-                    if(Value3 > 0) {
-                        if(mydb.updateFood(id,food_name.getText().toString(),food_type.getSelectedItemPosition(), food_type.getSelectedItem().toString(),score_value,food_region.getSelectedItemPosition(), food_region.getSelectedItem().toString(),food_phone.getText().toString(),food_address.getText().toString(),food_memo.getText().toString(),logoImage)) {
-                            Toast.makeText(getApplicationContext(), "수정 완료!",Toast.LENGTH_SHORT).show();
-                            finish();
-                        }else{
-                            Toast.makeText(getApplicationContext(), "수정 실패",Toast.LENGTH_SHORT).show();
-                        }
+                int Value3 = intent3.getIntExtra("id", 0);
+                id = Value3;
+                if (Value3 > 0) {
+                    if (mydb.updateFood(id, food_name.getText().toString(), food_type.getSelectedItemPosition(), food_type.getSelectedItem().toString(), score_value, food_region.getSelectedItemPosition(), food_region.getSelectedItem().toString(), food_phone.getText().toString(), food_address.getText().toString(), food_memo.getText().toString(), logoImage)) {
+                        Toast.makeText(getApplicationContext(), "수정 완료!", Toast.LENGTH_SHORT).show();
                         finish();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "수정 실패", Toast.LENGTH_SHORT).show();
                     }
+                    finish();
+                }
                 break;
 
             case R.id.food_pic:
                 Intent i = new Intent();
                 i.setAction(Intent.ACTION_PICK);
                 i.setDataAndType(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
-                startActivityForResult(i,GET_PICTURE);
+                startActivityForResult(i, GET_PICTURE);
+
+            case R.id.food_editable:
+                editTrue();
+                food_editable.setVisibility(View.GONE);
         }
+    }
+
+    public void editTrue() {
+        food_name.setClickable(true);
+        food_name.setFocusableInTouchMode(true);
+        food_address.setClickable(true);
+        food_address.setFocusableInTouchMode(true);
+        food_phone.setClickable(true);
+        food_phone.setFocusableInTouchMode(true);
+        food_memo.setClickable(true);
+        food_memo.setFocusableInTouchMode(true);
+
+        food_score.setIsIndicator(false);
+
+        food_pic.setEnabled(true);
+
+        food_type.setEnabled(true);
+        food_region.setEnabled(true);
+
+        food_name.post(new Runnable() {     //포커스 지정
+            @Override
+            public void run() {
+                food_name.setFocusableInTouchMode(true);
+                food_name.requestFocus();
+
+                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.showSoftInput(food_name,0);
+            }
+        });
+    }
+
+    public void editFalse() {
+        food_name.setClickable(false);
+        food_name.setFocusable(false);
+        food_address.setClickable(false);
+        food_address.setFocusable(false);
+        food_phone.setClickable(false);
+        food_phone.setFocusable(false);
+        food_memo.setClickable(false);
+        food_memo.setFocusable(false);
+
+        food_score.setIsIndicator(true);
+
+        food_pic.setEnabled(false);
+
+        food_type.setEnabled(false);
+        food_region.setEnabled(false);
     }
 
     /* 추가/수정/삭제버튼 visibility 속성 */
