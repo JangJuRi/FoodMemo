@@ -56,8 +56,6 @@ public class FoodDsForm extends AppCompatActivity implements View.OnClickListene
     Bitmap img;
     Cursor cursor;
 
-    boolean editable;
-
     private final int GET_PICTURE = 200;
 
 

@@ -6,18 +6,28 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button homeAddButton;
-    Button homeSearchButton;
+    ImageButton homeAddButton;
+    ImageButton homeSearchButton;
+    TextView main_count;
+
+    DBHelper mydb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        homeAddButton = (Button)findViewById(R.id.homeAddButton);
+        mydb = new DBHelper(getApplicationContext());
+
+        main_count = (TextView)findViewById(R.id.main_count);
+        main_count.setText(mydb.numberOfRows()+"");
+
+        homeAddButton = (ImageButton)findViewById(R.id.homeAddButton);
         homeAddButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -26,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        homeSearchButton = (Button)findViewById(R.id.homeSearchButton);
+        homeSearchButton = (ImageButton)findViewById(R.id.homeSearchButton);
         homeSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -34,5 +44,11 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        main_count.setText(mydb.numberOfRows()+"");
     }
 }
