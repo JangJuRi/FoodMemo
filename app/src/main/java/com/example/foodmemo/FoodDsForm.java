@@ -168,11 +168,13 @@ public class FoodDsForm extends AppCompatActivity implements View.OnClickListene
                 if (Value3 > 0) {
                     if (mydb.updateFood(id, food_name.getText().toString(), food_type.getSelectedItemPosition(), food_type.getSelectedItem().toString(), score_value, food_region.getSelectedItemPosition(), food_region.getSelectedItem().toString(), food_phone.getText().toString(), food_address.getText().toString(), food_memo.getText().toString(), logoImage)) {
                         Toast.makeText(getApplicationContext(), "수정 완료!", Toast.LENGTH_SHORT).show();
-                        finish();
+                        editFalse();
+                        food_editable.setVisibility(View.VISIBLE);
+                        food_edit.setVisibility(View.GONE);
                     } else {
                         Toast.makeText(getApplicationContext(), "수정 실패", Toast.LENGTH_SHORT).show();
+                        finish();
                     }
-                    finish();
                 }
                 break;
 
@@ -185,6 +187,7 @@ public class FoodDsForm extends AppCompatActivity implements View.OnClickListene
             case R.id.food_editable:
                 editTrue();
                 food_editable.setVisibility(View.GONE);
+                food_edit.setVisibility(View.VISIBLE);
         }
     }
 
@@ -207,7 +210,7 @@ public class FoodDsForm extends AppCompatActivity implements View.OnClickListene
 
         food_name.post(new Runnable() {     //포커스 지정
             @Override
-            public void run() {
+            public void run() {     //자동 포커스
                 food_name.setFocusableInTouchMode(true);
                 food_name.requestFocus();
 
@@ -241,8 +244,8 @@ public class FoodDsForm extends AppCompatActivity implements View.OnClickListene
         int Value = intent.getIntExtra("id",0);
         id = Value;
 
-        if(Value > 0) {     //수정버튼 활성화
-            food_edit.setVisibility(View.VISIBLE);
+        if(Value > 0) {     //저장버튼 활성화
+            food_edit.setVisibility(View.GONE);
             food_save.setVisibility(View.GONE);
             food_del.setVisibility(View.VISIBLE);
         }
