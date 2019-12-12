@@ -115,7 +115,6 @@ public class FoodSearchForm extends AppCompatActivity implements View.OnClickLis
 
         adapter = new MyAdapter(getApplicationContext(),R.layout.listviewform,data);
         listView.setAdapter(adapter);
-        TotalText();
     }
 
     /* 리스트뷰 상세검색  */
@@ -144,10 +143,5 @@ public class FoodSearchForm extends AppCompatActivity implements View.OnClickLis
 
         adapter = new MyAdapter(getApplicationContext(),R.layout.listviewform,data);
         listView.setAdapter(adapter);
-    }
-
-    /* 맛집 갯수 띄우기 */
-    public void TotalText() {
-        list_total.setText("맛집 리스트 (" + mydb.numberOfRows() + ")");
     }
 }

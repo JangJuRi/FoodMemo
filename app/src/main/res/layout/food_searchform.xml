@@ -8,5 +8,6 @@
         android:id="@+id/foodListview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="#FFDBA4"
         android:divider="#00000000" />
 </android.support.constraint.ConstraintLayout>

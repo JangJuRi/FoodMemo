@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
@@ -15,6 +17,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.Spinner;
@@ -43,6 +46,7 @@ public class FoodDsForm extends AppCompatActivity implements View.OnClickListene
     TextView food_address;
     TextView food_memo;
     ImageView food_pic;
+    ImageButton food_call;
 
     Button food_edit;
     Button food_del;
@@ -50,8 +54,6 @@ public class FoodDsForm extends AppCompatActivity implements View.OnClickListene
     Button food_editable;
 
     int score_value;
-    String file_path = null;
-    Uri uri;
     byte[] logoImage;
     Bitmap img;
     Cursor cursor;
@@ -72,6 +74,7 @@ public class FoodDsForm extends AppCompatActivity implements View.OnClickListene
         food_address = (TextView)findViewById(R.id.food_address);
         food_memo = (TextView)findViewById(R.id.food_memo);
         food_pic = (ImageView)findViewById(R.id.food_pic);
+        food_call = (ImageButton)findViewById(R.id.food_call);
 
         food_edit = (Button)findViewById(R.id.food_edit);
         food_del = (Button)findViewById(R.id.food_del);
@@ -83,6 +86,7 @@ public class FoodDsForm extends AppCompatActivity implements View.OnClickListene
         food_del.setOnClickListener(this);
         food_save.setOnClickListener(this);
         food_editable.setOnClickListener(this);
+        food_call.setOnClickListener(this);
 
         ButtonVisible();    //저장,수정버튼 활성화
 
@@ -120,7 +124,21 @@ public class FoodDsForm extends AppCompatActivity implements View.OnClickListene
                 score_value = (int) rating;
             }
         });
-    }
+
+
+
+        View view = getWindow().getDecorView();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (view != null) {
+                // 23 버전 이상일 때 상태바 하얀 색상에 회색 아이콘 색상을 설정
+                view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+                getWindow().setStatusBarColor(Color.parseColor("#ffffff"));
+            }
+        }else if (Build.VERSION.SDK_INT >= 21) {
+            // 21 버전 이상일 때
+            getWindow().setStatusBarColor(Color.parseColor("#FFB84D"));
+        }
+}
 
     @Override
     public void onClick(View view) {
@@ -183,11 +201,18 @@ public class FoodDsForm extends AppCompatActivity implements View.OnClickListene
                 i.setAction(Intent.ACTION_PICK);
                 i.setDataAndType(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
                 startActivityForResult(i, GET_PICTURE);
+                break;
 
             case R.id.food_editable:
                 editTrue();
                 food_editable.setVisibility(View.GONE);
                 food_edit.setVisibility(View.VISIBLE);
+                break;
+
+            case R.id.food_call:
+                String tel = "tel:"+food_phone.getText();
+                startActivity(new Intent("android.intent.action.CALL", Uri.parse(tel)));
+                break;
         }
     }
 
@@ -290,4 +315,10 @@ public class FoodDsForm extends AppCompatActivity implements View.OnClickListene
          private Bitmap getImage(byte[] image) {
         return BitmapFactory.decodeByteArray(image, 0, image.length);
        }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ButtonVisible();
+    }
 }

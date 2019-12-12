@@ -85,17 +85,37 @@
                 android:inputType="text"
                 android:textSize="14sp" />
 
-            <EditText
-                android:id="@+id/food_phone"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1.2"
-                android:background="@null"
-                android:ems="10"
-                android:gravity="center|top"
-                android:hint="맛집 번호를 적어주세요"
-                android:inputType="phone"
-                android:textSize="14sp" />
+                android:orientation="vertical">
+
+                <EditText
+                    android:id="@+id/food_phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.2"
+                    android:background="@null"
+                    android:ems="10"
+                    android:gravity="center|top"
+                    android:hint="맛집 번호를 적어주세요"
+                    android:inputType="phone"
+                    android:textSize="14sp" />
+
+                <ImageButton
+                    android:id="@+id/food_call"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:background="#00000000"
+                    android:maxWidth="20dp"
+                    android:maxHeight="20dp"
+                    android:scaleType="fitCenter"
+                    app:srcCompat="@drawable/call"
+                    tools:layout_editor_absoluteX="292dp"
+                    tools:layout_editor_absoluteY="355dp" />
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -133,6 +153,7 @@
                 android:hint="메모"
                 android:inputType="textMultiLine"
                 android:textSize="12sp" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -202,6 +223,7 @@
                 android:visibility="visible" />
 
         </LinearLayout>
+
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
