@@ -189,6 +189,7 @@ public class FoodDsForm extends AppCompatActivity implements View.OnClickListene
                         editFalse();
                         food_editable.setVisibility(View.VISIBLE);
                         food_edit.setVisibility(View.GONE);
+                        food_call.setVisibility(View.VISIBLE);
                     } else {
                         Toast.makeText(getApplicationContext(), "수정 실패", Toast.LENGTH_SHORT).show();
                         finish();
@@ -207,6 +208,7 @@ public class FoodDsForm extends AppCompatActivity implements View.OnClickListene
                 editTrue();
                 food_editable.setVisibility(View.GONE);
                 food_edit.setVisibility(View.VISIBLE);
+                food_call.setVisibility(View.GONE);
                 break;
 
             case R.id.food_call:
@@ -269,15 +271,17 @@ public class FoodDsForm extends AppCompatActivity implements View.OnClickListene
         int Value = intent.getIntExtra("id",0);
         id = Value;
 
-        if(Value > 0) {     //저장버튼 활성화
+        if(Value > 0) {     //맛집 수정/삭제
             food_edit.setVisibility(View.GONE);
             food_save.setVisibility(View.GONE);
             food_del.setVisibility(View.VISIBLE);
+            food_call.setVisibility(View.VISIBLE);
         }
-        else {              //추가버튼 활성화
+        else {              //맛집 추가
             food_edit.setVisibility(View.GONE);
             food_save.setVisibility(View.VISIBLE);
             food_del.setVisibility(View.GONE);
+            food_call.setVisibility(View.GONE);
         }
     }
 
