@@ -63,8 +63,6 @@ public class MyAdapter extends BaseAdapter {
         TextView list_region = (TextView)convertView.findViewById(R.id.list_region);
         list_region.setText(foodList.getRegionT());
 
-        TextView centerText = (TextView)convertView.findViewById(R.id.center);
-
         return convertView;
     }
 
