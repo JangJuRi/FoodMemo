@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background1"
+    android:background="@drawable/background2"
     tools:context=".MainActivity">
 
     <TextView
@@ -37,69 +37,34 @@
         app:layout_constraintStart_toStartOf="@+id/textView3"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
-    <!--<ImageButton-->
-        <!--android:id="@+id/homeSearchButton"-->
-        <!--android:layout_width="130dp"-->
-        <!--android:layout_height="130dp"-->
-        <!--android:layout_marginEnd="28dp"-->
-        <!--android:layout_marginRight="28dp"-->
-        <!--android:layout_marginBottom="120dp"-->
-        <!--android:background="#00000000"-->
-        <!--android:scaleType="fitCenter"-->
-        <!--app:layout_constraintBottom_toBottomOf="parent"-->
-        <!--app:layout_constraintEnd_toEndOf="parent"-->
-        <!--app:srcCompat="@drawable/list"-->
-        <!--tools:ignore="MissingConstraints" />-->
-
-    <!--<ImageButton-->
-        <!--android:id="@+id/homeAddButton"-->
-        <!--android:layout_width="130dp"-->
-        <!--android:layout_height="130dp"-->
-        <!--android:layout_marginStart="32dp"-->
-        <!--android:layout_marginLeft="28dp"-->
-        <!--android:layout_marginEnd="8dp"-->
-        <!--android:layout_marginRight="8dp"-->
-        <!--android:layout_marginBottom="120dp"-->
-        <!--android:background="#00000000"-->
-        <!--android:scaleType="fitCenter"-->
-        <!--app:layout_constraintBottom_toBottomOf="parent"-->
-        <!--app:layout_constraintEnd_toStartOf="@+id/homeSearchButton"-->
-        <!--app:layout_constraintHorizontal_bias="0.16"-->
-        <!--app:layout_constraintStart_toStartOf="parent"-->
-        <!--app:srcCompat="@drawable/food_add"-->
-        <!--tools:ignore="MissingConstraints" />-->
 
     <Button
         android:id="@+id/homeSearchButton"
         android:layout_width="100dp"
         android:layout_height="80dp"
-        android:layout_marginTop="476dp"
-        android:layout_marginEnd="76dp"
-        android:layout_marginRight="76dp"
-        android:background="#191919"
+        android:layout_marginTop="256dp"
+        android:layout_marginEnd="52dp"
+        android:layout_marginRight="52dp"
+        android:background="@drawable/main_button"
         android:text="맛집 리스트"
         android:textColor="#FFFFFF"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/main_count"
         tools:ignore="MissingConstraints" />
 
     <Button
         android:id="@+id/homeAddButton"
         android:layout_width="100dp"
         android:layout_height="80dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="476dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:background="#191919"
-        android:text="밋집 추가"
+        android:layout_marginStart="52dp"
+        android:layout_marginLeft="52dp"
+        android:layout_marginTop="256dp"
+        android:background="@drawable/main_button"
+        android:text="맛집 추가"
         android:textColor="#FFFFFF"
         android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/homeSearchButton"
-        app:layout_constraintHorizontal_bias="0.521"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/main_count"
         tools:ignore="MissingConstraints" />
 </android.support.constraint.ConstraintLayout>
