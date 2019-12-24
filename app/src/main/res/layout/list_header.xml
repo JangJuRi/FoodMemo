@@ -13,8 +13,8 @@
         <TextView
             android:id="@+id/list_total"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:background="@color/colorPrimaryDark"
+            android:layout_height="50dp"
+            android:background="#FF0000"
             android:gravity="center"
             android:text="맛집 리스트"
             android:textColor="@android:color/background_light"

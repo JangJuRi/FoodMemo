@@ -16,8 +16,8 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
-    ImageButton homeAddButton;
-    ImageButton homeSearchButton;
+    Button homeAddButton;
+    Button homeSearchButton;
     TextView main_count;
 
     DBHelper mydb;
@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         main_count = (TextView)findViewById(R.id.main_count);
         main_count.setText(mydb.numberOfRows()+"");
 
-        homeAddButton = (ImageButton)findViewById(R.id.homeAddButton);
+        homeAddButton = (Button)findViewById(R.id.homeAddButton);
         homeAddButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        homeSearchButton = (ImageButton)findViewById(R.id.homeSearchButton);
+        homeSearchButton = (Button) findViewById(R.id.homeSearchButton);
         homeSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
